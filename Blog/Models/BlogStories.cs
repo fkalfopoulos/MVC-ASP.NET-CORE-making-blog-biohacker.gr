@@ -10,7 +10,7 @@ namespace Blog.Models
         public Stories()
         {
             Likes = new List<Like>();
-            Shares = new List<Share>();
+            Categories = new List<Categories>();
             Comments = new List<Comments>();
         }
         public string StoryId { get; set; }
@@ -20,12 +20,13 @@ namespace Blog.Models
         public long CreationTime { get; set; }
         public long LastEditTime { get; set; }
         public long PublishTime { get; set; }
-        public bool Draft { get; set; }
-
+       
         public User Owner { get; set; }
         public string OwnerId { get; set; }
         public List<Like> Likes { get; set; }
         public List<Comments>Comments { get; set; }
-        public List<Share> Shares { get; set; }
+       
+
+        public ICollection<Categories> Categories { get; set; }
     }
 }

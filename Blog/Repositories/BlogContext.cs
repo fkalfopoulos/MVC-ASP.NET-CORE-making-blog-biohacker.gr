@@ -15,11 +15,7 @@ namespace Blog.Repositories
 
 
         public DbSet<Stories> Articles { get; set; }
-
         public DbSet<Like> Likes { get; set; }
-        public DbSet<Share> Shares { get; set; }
-
-        [NotMapped]
         public DbSet<Comments> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -33,8 +29,7 @@ namespace Blog.Repositories
             modelBuilder.Entity<Like>()
                 .HasKey(l => l.StoryId);
 
-            modelBuilder.Entity<Share>()
-                .HasKey(s => s.StoryId);
+            
         }
     }
 }

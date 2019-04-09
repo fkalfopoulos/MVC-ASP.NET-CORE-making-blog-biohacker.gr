@@ -11,7 +11,7 @@ namespace Blog.Models
         {
             Stories = new List<Stories>();
             Likes = new List<Like>();
-            Shares = new List<Share>();
+            
             Comments = new List<Comments>();
         }
         public string Id { get; set; }
@@ -23,6 +23,6 @@ namespace Blog.Models
         public List<Like> Likes { get; set; }
         public List<Comments> Comments { get; set; }
 
-        public List<Share> Shares { get; set; }
+       
     }
 }

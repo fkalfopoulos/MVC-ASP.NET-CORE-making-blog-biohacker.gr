@@ -9,7 +9,6 @@ namespace Blog.Data
     public class EntityRepo
 
     {
-       
         private readonly BlogContext _context;
 
         public EntityRepo(BlogContext context)
@@ -20,12 +19,19 @@ namespace Blog.Data
         public async Task Add<T>(T Entity) where T : class
         {
             _context.Add(Entity);
+            
             await Commit();
         }
 
         public async Task<bool> Commit()
         {
             return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task Update<T>(T Entity) where T : class
+        {
+            _context.Entry(Entity);
+            await Commit();
         }
             
     }
