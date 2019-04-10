@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Blog.Interfaces
 {
-    interface IRepository
+   public interface IRepository
     {
         Stories GetPost(string id);
-        List<Stories> GetAllStories(string id);
+        List<Stories> GetAllStories();
         Task CreatePost(Stories story);
         Task RemovePost(string id);
         Task EditPost(string id);

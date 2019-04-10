@@ -5,19 +5,41 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Blog.Models;
+using Blog.Interfaces;
+using Blog.Repositories;
 
 namespace Blog.Controllers
 {
     public class HomeController : Controller
     {
+
+        private IRepository _repo;
+
+
+            public HomeController( IRepository repo)
+        {
+            _repo = repo;
+        }
+
         public IActionResult Index()
         {
+            var posts = _repo.GetAllStories();
             return View();
         }
 
-        public IActionResult PostView(string PostView)
+        [HttpGet]
+        public  IActionResult Edit()
         {
-            return View(PostView);
+            return View(new Stories());
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Stories story)
+        {
+           await _repo.CreatePost(story);
+            await _repo.Commit();
+            return Ok();
         }
 
 

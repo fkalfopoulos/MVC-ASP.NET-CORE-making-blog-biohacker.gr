@@ -28,7 +28,6 @@ namespace Blog.Repositories
 
             modelBuilder.Entity<Like>()
                 .HasKey(l => l.StoryId);
-
             
         }
     }

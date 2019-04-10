@@ -15,7 +15,7 @@ namespace Blog.Models
         }
         public string StoryId { get; set; }
         public string Title { get; set; }
-        public string Content { get; set; }
+        public string Body { get; set; }
         
         public long CreationTime { get; set; }
         public long LastEditTime { get; set; }

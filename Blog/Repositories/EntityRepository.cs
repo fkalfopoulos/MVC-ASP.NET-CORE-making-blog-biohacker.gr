@@ -11,7 +11,8 @@ namespace Blog.Data
     public class EntityRepository : IRepository
 
     {
-        private readonly BlogContext _context;
+        private  BlogContext _context;
+        
 
         public EntityRepository(BlogContext context)
         {
@@ -30,7 +31,7 @@ namespace Blog.Data
             return _context.Articles.FirstOrDefault(p => p.StoryId == p.StoryId);
         }
 
-        public List<Stories> GetAllStories(string id)
+        public List<Stories> GetAllStories()
         {
             return _context.Articles.ToList();
 
