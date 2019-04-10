@@ -15,6 +15,11 @@ namespace Blog.Controllers
             return View();
         }
 
+        public IActionResult PostView(string PostView)
+        {
+            return View(PostView);
+        }
+
 
 
         public IActionResult Privacy()

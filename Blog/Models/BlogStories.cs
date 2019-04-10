@@ -25,7 +25,7 @@ namespace Blog.Models
         public string OwnerId { get; set; }
         public List<Like> Likes { get; set; }
         public List<Comments>Comments { get; set; }
-       
+       public List<string> Tags { get; set; }
 
         public ICollection<Categories> Categories { get; set; }
     }
