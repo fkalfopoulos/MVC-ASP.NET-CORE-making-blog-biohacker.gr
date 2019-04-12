@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Blog.Interfaces
 {
-   public interface IRepository
+    public interface IRepository
     {
-        Stories GetPost(string id);
-        List<Stories> GetAllStories();
-        Task CreatePost(Stories story);
+        Story GetPost(string id);
+        List<Story> GetLastStories(int Count);
+        Task CreatePost(Story story);
         Task RemovePost(string id);
         Task EditPost(string id);
         Task<bool> Commit();

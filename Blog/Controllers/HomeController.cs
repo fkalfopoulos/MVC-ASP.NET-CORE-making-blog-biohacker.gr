@@ -16,28 +16,28 @@ namespace Blog.Controllers
         private IRepository _repo;
 
 
-            public HomeController( IRepository repo)
+        public HomeController(IRepository repo)
         {
             _repo = repo;
         }
 
         public IActionResult Index()
         {
-            var posts = _repo.GetAllStories();
-            return View();
+            var posts = _repo.GetLastStories(10);
+            return View(posts);
         }
 
         [HttpGet]
-        public  IActionResult Edit()
+        public IActionResult Edit()
         {
-            return View(new Stories());
+            return View(new Story());
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Stories story)
+        public async Task<IActionResult> Edit(Story story)
         {
-           await _repo.CreatePost(story);
+            await _repo.CreatePost(story);
             await _repo.Commit();
             return Ok();
         }

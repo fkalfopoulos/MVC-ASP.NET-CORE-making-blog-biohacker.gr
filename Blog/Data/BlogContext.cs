@@ -14,21 +14,21 @@ namespace Blog.Repositories
         public BlogContext(DbContextOptions<BlogContext> options) : base(options) { }
 
 
-        public DbSet<Stories> Articles { get; set; }
+        public DbSet<Story> Stories { get; set; }
         public DbSet<Like> Likes { get; set; }
-        public DbSet<Comments> Comments { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Stories>()
+            modelBuilder.Entity<Story>()
                .HasKey(s => s.StoryId);
 
-            modelBuilder.Entity<Comments>()
+            modelBuilder.Entity<Comment>()
                  .HasKey(c => c.CommentId);
 
             modelBuilder.Entity<Like>()
                 .HasKey(l => l.StoryId);
-            
+
         }
     }
 }

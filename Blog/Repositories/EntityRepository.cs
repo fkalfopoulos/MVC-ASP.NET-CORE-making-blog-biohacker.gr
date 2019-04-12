@@ -11,48 +11,50 @@ namespace Blog.Data
     public class EntityRepository : IRepository
 
     {
-        private  BlogContext _context;
-        
+        private BlogContext _context;
+
 
         public EntityRepository(BlogContext context)
         {
             _context = context;
         }
 
-        public async Task CreatePost(Stories story)
+        public async Task CreatePost(Story story)
         {
             _context.Add(story);
 
             await Commit();
         }
 
-        public Stories GetPost(string id)
+        public Story GetPost(string id)
         {
-            return _context.Articles.FirstOrDefault(p => p.StoryId == p.StoryId);
+            return _context.Stories.FirstOrDefault(p => p.StoryId == p.StoryId);
         }
 
-        public List<Stories> GetAllStories()
+        public List<Story> GetLastStories(int Count)
         {
-            return _context.Articles.ToList();
-
-         }
+            return _context.Stories
+                .OrderByDescending(article => article.CreationTime)
+                .Take(Count)
+                .ToList();
+        }
 
         public async Task<bool> Commit()
-            {
-                return await _context.SaveChangesAsync() > 0;
-            }
-
-            public async Task RemovePost(string id)
-            {
-                _context.Remove(id);
-                await Commit();
-            }
-
-            public async Task EditPost(string id)
-            {
-                _context.Entry(id);
-                await Commit();
-            }
-
+        {
+            return await _context.SaveChangesAsync() > 0;
         }
+
+        public async Task RemovePost(string id)
+        {
+            _context.Remove(id);
+            await Commit();
+        }
+
+        public async Task EditPost(string id)
+        {
+            _context.Entry(id);
+            await Commit();
+        }
+
     }
+}
