@@ -1,5 +1,6 @@
 ﻿using Blog.Models;
 using Blog.Repositories;
+using Blog.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,9 @@ namespace Blog.Interfaces
     {
         Story GetPost(string id);
         List<Story> GetLastStories(int Count);
-        Task CreatePost(Story story);
+        Task CreatePost(PostViewModel vm);
         Task RemovePost(string id);
-        Task EditPost(string id);
+        Task EditPost(PostViewModel vm);
         Task<bool> Commit();
 
 

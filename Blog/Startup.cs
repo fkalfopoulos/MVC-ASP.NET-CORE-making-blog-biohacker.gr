@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Blog.Data;
+using Blog.FileManager;
 using Blog.Interfaces;
 using Blog.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -36,6 +37,7 @@ namespace Blog
             });
 
             services.AddTransient<IRepository,EntityRepository>();
+            services.AddTransient<IFilemanager,Filemanager>();
 
 
             services.AddDbContext<BlogContext>(options =>

@@ -13,7 +13,7 @@ namespace Blog.Models
         public DateTime DateCreated { get; set; }
 
         public User User;
-        public Stories Stories;
+        public Story Stories;
 
     }
 }

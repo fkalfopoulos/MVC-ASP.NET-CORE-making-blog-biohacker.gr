@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using Blog.Models;
 using Blog.Interfaces;
 using Blog.Repositories;
+using Microsoft.AspNetCore.Http;
+using Blog.FileManager;
+using Microsoft.Extensions.DependencyInjection;
+using Blog.ViewModels;
 
 namespace Blog.Controllers
 {
@@ -14,11 +18,14 @@ namespace Blog.Controllers
     {
 
         private IRepository _repo;
+        private readonly IFilemanager _filemanager;
+        
 
-
-        public HomeController(IRepository repo)
+        public HomeController(IRepository repo, IFilemanager filemanager)
         {
             _repo = repo;
+            _filemanager = filemanager;
+            
         }
 
         public IActionResult Index()
@@ -28,23 +35,56 @@ namespace Blog.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit()
+        public IActionResult Edit(string Id)
         {
-            return View(new Story());
-        }
+            var post = _repo.GetPost(Id);
 
+            return View(new PostViewModel
+            {
+                StoryId = post.StoryId,
+                Title = post.Title,
+                Description = post.Description,
+                Body = post.Body,
+                Photo = post.Photo,
+            });
+            
+        }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Story story)
+        public async Task<IActionResult> Edit(PostViewModel vm)
         {
-            await _repo.CreatePost(story);
-            await _repo.Commit();
-            return Ok();
+            var post = (new Story
+            {
+                StoryId = vm.StoryId,
+                Title = vm.Title,
+                Description = vm.Description,
+                Body = vm.Body,
+                Photo = vm.Photo
+            });
+            if (vm.StoryId != null)
+                await _repo.EditPost(vm);
+            else await _repo.CreatePost(vm);
+
+            return RedirectToAction();
         }
 
+        //[HttpGet("/image/{image}")]
+
+        //public IActionResult Image(string image)
+        //{
+        //    var mine = image.Substring(image.LastIndexOf('.') + 1);
+        //    return new FileStreamResult(_filemanager.Imagestream(image), $"image/{mine}");
+        // }
 
 
-        public IActionResult Privacy()
+        [HttpGet("/image/{image}")]
+        public IActionResult Image(string image) =>
+        new FileStreamResult(_filemanager.Imagestream(image),
+        image.Substring(image.LastIndexOf('.') + 1));
+
+
+
+          public IActionResult Privacy()
         {
             return View();
         }

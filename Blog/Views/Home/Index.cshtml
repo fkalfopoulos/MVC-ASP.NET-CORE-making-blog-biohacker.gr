@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<Blog.Models.Story>
-    <!DOCTYPE html>
+   
     <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -34,7 +34,7 @@
 
         <header id="header">
 
-            @*<div id="nav">
+            <div id="nav">
 
                 <div id="nav-fixed">
                     <div class="container">
@@ -44,22 +44,14 @@
                         </div>
 
                         <ul class="nav-menu nav navbar-nav">
-                            <li><a href="category.html">News</a></li>
-                            <li><a href="category.html">Popular</a></li>
-                            <li class="cat-1"><a href="category.html">Web Design</a></li>
+                            
+                            <li class="cat-1"><a class="nav-link">@Html.ActionLink("PostView", "Post", "Home")PostView</a></li>
                             <li class="cat-2"><a href="category.html">JavaScript</a></li>
                             <li class="cat-3"><a href="category.html">Css</a></li>
                             <li class="cat-4"><a href="category.html">Jquery</a></li>
                         </ul>
 
-                        <div class="nav-btns">
-                            <button class="aside-btn"><i class="fa fa-bars"></i></button>
-                            <button class="search-btn"><i class="fa fa-search"></i></button>
-                            <div class="search-form">
-                                <input class="search-input" type="text" name="search" placeholder="Enter Your Search ...">
-                                <button class="search-close"><i class="fa fa-times"></i></button>
-                            </div>
-                        </div>
+                        
                         <!-- /search & aside toggle -->
                     </div>
                 </div>
@@ -83,7 +75,7 @@
                         @foreach (Story article in Model)
                         {
                         <div class="post post-widget">
-                            <a class="nav-link" href="@Html.ActionLink(" Ιnbox", "PostView" , "Home" )" />
+                            <a class="nav-link" href="@Html.ActionLink(" Ιnbox", "Post" , "Home" )" />
 
                             <div class="post-body">
                                 <h3 class="post-title">
@@ -127,7 +119,7 @@
                     <!-- /aside nav close -->
                 </div>
                 <!-- Aside Nav -->
-            </div>*@
+            </div>
             <!-- /Nav -->
         </header>
         <!-- /Header -->

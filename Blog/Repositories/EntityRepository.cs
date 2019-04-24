@@ -1,6 +1,7 @@
 ﻿using Blog.Interfaces;
 using Blog.Models;
 using Blog.Repositories;
+using Blog.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,9 +20,9 @@ namespace Blog.Data
             _context = context;
         }
 
-        public async Task CreatePost(Story story)
+        public async Task CreatePost(PostViewModel vm)
         {
-            _context.Add(story);
+            _context.Add(vm);
 
             await Commit();
         }
@@ -50,9 +51,10 @@ namespace Blog.Data
             await Commit();
         }
 
-        public async Task EditPost(string id)
+
+        public async Task EditPost(PostViewModel vm)
         {
-            _context.Entry(id);
+            _context.Entry(vm);
             await Commit();
         }
 
