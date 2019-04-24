@@ -2,7 +2,7 @@
 using Blog.Models;
 using Blog.Repositories;
 using Blog.ViewModels;
-using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,21 +20,37 @@ namespace Blog.Data
             _context = context;
         }
 
-        public async Task CreatePost(PostViewModel vm)
+        public void Add<T>(T Entity) where T : class
+        {
+            _context.Add(Entity);
+        }
+
+        public void Delete<T>(T Entity) where T : class
+        {
+            _context.Remove(Entity);
+        }
+
+        public async Task SavePhotoData(PostViewModel vm)
         {
             _context.Add(vm);
 
             await Commit();
         }
 
-        public Story GetPost(string id)
+        public Story GetPost(int id)
         {
-            return _context.Stories.FirstOrDefault(p => p.StoryId == p.StoryId);
+            return _context.Stories.FirstOrDefault(p => p.Id == id);
+        }
+
+        public Photo GetPhoto(int id)
+        {
+            return _context.Photos.FirstOrDefault(p => p.Id == id);
         }
 
         public List<Story> GetLastStories(int Count)
         {
             return _context.Stories
+                .Include(str => str.Photos)
                 .OrderByDescending(article => article.CreationTime)
                 .Take(Count)
                 .ToList();
@@ -43,13 +59,7 @@ namespace Blog.Data
         public async Task<bool> Commit()
         {
             return await _context.SaveChangesAsync() > 0;
-        }
-
-        public async Task RemovePost(string id)
-        {
-            _context.Remove(id);
-            await Commit();
-        }
+        }    
 
 
         public async Task EditPost(PostViewModel vm)

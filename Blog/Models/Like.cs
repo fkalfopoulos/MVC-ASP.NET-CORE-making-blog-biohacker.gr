@@ -7,6 +7,8 @@ namespace Blog.Models
 {
     public class Like
     {
+        public int Id { get; set; }
+        public bool IsLike { get; set; }
         public string StoryId { get; set; }
         public Story Story { get; set; }
 

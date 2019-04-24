@@ -12,13 +12,13 @@ namespace Blog.Models
             Likes = new List<Like>();
             Categories = new List<Category>();
             Comments = new List<Comment>();
+            Photos = new List<Photo>();
         }
-        public string StoryId { get; set; }
+        public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Body { get; set; }
-        public Photo Photo { get; set; }
-        public int PhotoId { get; set; }
+        public IList<Photo> Photos { get; set; }
 
         public DateTime CreationTime { get; set; }
         public DateTime LastEditTime { get; set; }

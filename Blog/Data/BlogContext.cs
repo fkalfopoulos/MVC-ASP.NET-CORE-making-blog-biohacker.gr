@@ -1,10 +1,5 @@
 ﻿using Blog.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Blog.Repositories
 {
@@ -17,17 +12,10 @@ namespace Blog.Repositories
         public DbSet<Story> Stories { get; set; }
         public DbSet<Like> Likes { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<Photo> Photos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Story>()
-               .HasKey(s => s.StoryId);
-
-            modelBuilder.Entity<Comment>()
-                 .HasKey(c => c.CommentId);
-
-            modelBuilder.Entity<Like>()
-                .HasKey(l => l.StoryId);
 
         }
     }

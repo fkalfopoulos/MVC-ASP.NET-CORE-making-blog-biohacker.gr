@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Blog.FileManager;
 using Microsoft.Extensions.DependencyInjection;
 using Blog.ViewModels;
+using Blog.DTOs;
 
 namespace Blog.Controllers
 {
@@ -19,72 +20,110 @@ namespace Blog.Controllers
 
         private IRepository _repo;
         private readonly IFilemanager _filemanager;
-        
+
 
         public HomeController(IRepository repo, IFilemanager filemanager)
         {
             _repo = repo;
             _filemanager = filemanager;
-            
+
         }
 
         public IActionResult Index()
         {
             var posts = _repo.GetLastStories(10);
-            return View(posts);
+            var stories = posts.Select(str => new StoryDTO
+            {
+                Id = str.Id,
+                Title = str.Title,
+                Description = str.Description,
+                ImageSrc = str.Photos.First(ph => ph.IsMain).Url
+            }).ToList();
+            return View(stories);
         }
 
+        public IActionResult Post(PostViewModel vm)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(BlogPostDTO PostData)
+        {
+            string FilePath = await _filemanager.SaveImage(PostData.MainPhoto);
+            Story NewStory = new Story
+            {
+                Title = PostData.Title,
+                Description = PostData.Description,
+                Body = PostData.Body,
+                Tags = PostData.Tags
+            };
+            _repo.Add(NewStory);
+
+            var NewPhoto = new Photo
+            {
+                Url = FilePath,
+                Description = "Descriptive Photo",
+                IsMain = true
+            };
+            if (await _repo.Commit())
+            {
+                NewStory.Photos.Add(NewPhoto);
+
+                if (await _repo.Commit())
+                {
+                    return CreatedAtRoute(
+                            nameof(HomeController.GetPhoto),
+                            new { id = NewPhoto.Id });
+                }
+
+                return BadRequest("Could not save the photo");
+            }
+            return BadRequest("Could not save the story");
+        }
+
+
+        [HttpGet("id", Name = "GetPhoto")]
+        public IActionResult GetPhoto(int Id)
+        {
+           return Ok(_filemanager.GetImagePath(Id));
+        }
+        
+
         [HttpGet]
-        public IActionResult Edit(string Id)
+        public IActionResult Edit(int Id)
         {
             var post = _repo.GetPost(Id);
 
             return View(new PostViewModel
             {
-                StoryId = post.StoryId,
                 Title = post.Title,
                 Description = post.Description,
-                Body = post.Body,
-                Photo = post.Photo,
+                Body = post.Body
             });
-            
+
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Edit(PostViewModel vm)
-        {
-            var post = (new Story
-            {
-                StoryId = vm.StoryId,
-                Title = vm.Title,
-                Description = vm.Description,
-                Body = vm.Body,
-                Photo = vm.Photo
-            });
-            if (vm.StoryId != null)
-                await _repo.EditPost(vm);
-            else await _repo.CreatePost(vm);
-
-            return RedirectToAction();
-        }
-
-        //[HttpGet("/image/{image}")]
-
-        //public IActionResult Image(string image)
+        //[HttpPost]
+        //public async Task<IActionResult> Edit(BlogPostDTO PostData)
         //{
-        //    var mine = image.Substring(image.LastIndexOf('.') + 1);
-        //    return new FileStreamResult(_filemanager.Imagestream(image), $"image/{mine}");
-        // }
+        //    string ImageName = await _filemanager.SaveImage(PostData.MainPhoto);
+        //    var post = (new Story
+        //    {
+        //        StoryId = PostData.StoryId,
+        //        Title = PostData.Title,
+        //        Description = PostData.Description,
+        //        Body = PostData.Body,
+        //        Photo = PostData.Photo
+        //    });
+        //    if (PostData.StoryId != null)
+        //        await _repo.EditPost(PostData);
+        //    else await _repo.CreatePost(PostData);
 
+        //    return RedirectToAction();
+        //}
 
-        [HttpGet("/image/{image}")]
-        public IActionResult Image(string image) =>
-        new FileStreamResult(_filemanager.Imagestream(image),
-        image.Substring(image.LastIndexOf('.') + 1));
-
-
-
-          public IActionResult Privacy()
+        public IActionResult Privacy()
         {
             return View();
         }

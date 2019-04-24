@@ -1,35 +1,31 @@
-﻿@model Blog.Models.Story
+﻿@model Blog.DTOs.BlogPostDTO
 
 @{
     ViewData["Title"] = "Post";
 }
-<link href="~/Trumb/Trumbowyg-master/dist/ui/trumbowyg.min.css" />
-<div>
-    <form asp-controller="Home" asp-action="Edit" method="post" enctype="multipart/form-data">
-        <div>
-            <label> Title</label>
-            <input asp-for="Title" />
-        </div>
-        <br>
-        <div>
-            <label>Body</label>
-            <input asp-for="Body" />
-        </div>
-        <div>
-            <label>Image</label>
-            <input asp-for="Photo" />
-        </div>
-        <input type="submit" value="submit" />
-    </form>
-</div>
+<link rel="stylesheet" href="~/css/trumbowyg.min.css" />
+
+<form asp-controller="Home" asp-action="Create" method="post" enctype="multipart/form-data">
+    <div>
+        <label>Title</label>
+        <input asp-for="Title" type="text" />
+    </div>
+    <div>
+        <label>Body</label>
+        <textarea asp-for="Body" id="editor" class="trumbowyg-editor" contenteditable="true" dir="ltr" style="height: 198.222px;">
+            </textarea>
+    </div>
+    <div>
+        <label>Image</label>
+        <input asp-for="MainPhoto" type="file"/>
+    </div>
+    <input type="submit" value="submit" />
+</form>
+
 
 @section Scripts{
-   
-    
-    <script src="~/Trumb/Trumbowyg-master/dist/trumbowyg.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-    <script>
-        $('#trumbowyg-demo').trumbowyg();
-    </script>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
+    <script src="~/js/trumbowyg.min.js"></script>
+    <script>$('#editor').trumbowyg();</script>
 }

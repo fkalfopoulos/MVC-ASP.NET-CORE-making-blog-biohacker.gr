@@ -9,7 +9,7 @@ namespace Blog.Interfaces
 {
     public interface IFilemanager
     {
-        FileStream Imagestream(string image);
+        string GetImagePath(int storyId);
         Task<string> SaveImage(IFormFile image);
     }
 }

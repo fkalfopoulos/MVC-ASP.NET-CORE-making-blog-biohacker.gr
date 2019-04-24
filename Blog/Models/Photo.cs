@@ -9,9 +9,13 @@ namespace Blog.Models
         public string Description { get; set; }
         public DateTime DateAdded { get; set; }
         public bool IsMain { get; set; }
-        public string PublicID { get; set; }
 
         public Story Story { get; set; }
         public int StoryId { get; set; }
+
+        public Photo()
+        {
+            DateAdded = DateTime.Now;
+        }
     }
 }

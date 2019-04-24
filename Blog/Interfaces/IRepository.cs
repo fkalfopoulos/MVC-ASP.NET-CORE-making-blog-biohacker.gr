@@ -10,13 +10,13 @@ namespace Blog.Interfaces
 {
     public interface IRepository
     {
-        Story GetPost(string id);
+        void Add<T>(T Entity) where T : class;
+        void Delete<T>(T Entity) where T : class;
+        Story GetPost(int id);
         List<Story> GetLastStories(int Count);
-        Task CreatePost(PostViewModel vm);
-        Task RemovePost(string id);
+        
         Task EditPost(PostViewModel vm);
         Task<bool> Commit();
-
-
+        Photo GetPhoto(int id);
     }
 }

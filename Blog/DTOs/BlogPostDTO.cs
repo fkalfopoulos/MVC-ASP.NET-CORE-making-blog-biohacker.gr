@@ -1,4 +1,5 @@
 ﻿using Blog.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Blog.DTOs
         public string Description { get; set; }
         public string Body { get; set; }
 
-        public PhotoDTO MainPhoto { get; set; }
+        public IFormFile MainPhoto { get; set; }
         public DateTime CreationTime { get; set; }
         public DateTime LastEditTime { get; set; }
 
